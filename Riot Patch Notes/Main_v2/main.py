@@ -66,7 +66,7 @@ async def on_ready():
 
 @client.command()
 async def setchannel(ctx):
-    print("Message recieved:", ctx)
+    print("Message recieved:", ctx.message.content)
     await responses.channel_set(ctx, default_channel_id)
 
 # Load the default channel ID when the bot starts
