@@ -8,8 +8,8 @@
 
 # import libraries
 import os
-import discord
 import requests
+import discord
 import asyncio
 from datetime import datetime, timedelta
 
@@ -17,6 +17,11 @@ from datetime import datetime, timedelta
 import responses     # Will be used to create variables based off responses of user's
 import LeaguePN      # This file will have the variables needed for League Patch notes
 import ValorantPN    # This file will have the variables needed for Valorant Patch notes
+import saveVar       # This file will save the variables in case the bot goes down
+
+# 
+
+
 
 
 # Discord bot token, using OS environment variables
@@ -36,8 +41,9 @@ CHANNEL_ID = None
 
 
 
-
+@client.event
 async def on_ready():
+    global CHANNEL_ID
     print("Patch Notes Bot is online!")
 
     if CHANNEL_ID is None:
