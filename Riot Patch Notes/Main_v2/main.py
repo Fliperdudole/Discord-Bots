@@ -10,6 +10,7 @@
 import os
 import requests
 import discord
+from discord.ext import commands
 import asyncio
 from datetime import datetime, timedelta
 
@@ -20,8 +21,10 @@ import ValorantPN    # This file will have the variables needed for Valorant Pat
 import saveVar       # This file will save the variables in case the bot goes down
 
 # Initialize the Discord client
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
+#intents = discord.Intents.default()
+
+client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+
 
 
 # Discord bot token, using OS environment variables
@@ -52,73 +55,22 @@ async def on_ready():
     
     if CHANNEL_ID is None:                                  # Checks if default channel isn't set
         CHANNEL_ID = client.guilds[0].text_channels[0].id
-        print('Default Channel Set:', CHANNEL_ID)
+        print("Default Channel Set:", CHANNEL_ID)
         
         saveVar.save_default_channel(CHANNEL_ID)
+    else:
+        print("Channel is set to", CHANNEL_ID)
 
 
 
 
-@client.event
-async def on_message(message):
-    await responses.channel_set(message, default_channel_id)
+@client.command()
+async def setchannel(ctx):
+    print("Message recieved:", ctx)
+    await responses.channel_set(ctx, default_channel_id)
 
 # Load the default channel ID when the bot starts
 default_channel_id = saveVar.load_default_channel()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
