@@ -1,5 +1,4 @@
 import os
-import main
 
 DEFAULT_CHANNEL_FILE = 'default_channel.txt'
 
@@ -21,6 +20,8 @@ def load_default_channel():
     if os.path.isfile(DEFAULT_CHANNEL_FILE):
         # Open the file and read the default channel ID
         with open(DEFAULT_CHANNEL_FILE, 'r') as file:
-            return int(file.read())
+            channel_id = file.read().strip()
+            if channel_id:
+                return int(channel_id)
 
     return None

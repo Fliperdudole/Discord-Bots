@@ -19,9 +19,9 @@ import LeaguePN      # This file will have the variables needed for League Patch
 import ValorantPN    # This file will have the variables needed for Valorant Patch notes
 import saveVar       # This file will save the variables in case the bot goes down
 
-# 
-
-
+# Initialize the Discord client
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
 
 
 # Discord bot token, using OS environment variables
@@ -46,14 +46,25 @@ async def on_ready():
     global CHANNEL_ID
     print("Patch Notes Bot is online!")
 
-    if CHANNEL_ID is None:
+    CHANNEL_ID = saveVar.load_default_channel()
+
+
+    
+    if CHANNEL_ID is None:                                  # Checks if default channel isn't set
         CHANNEL_ID = client.guilds[0].text_channels[0].id
         print('Default Channel Set:', CHANNEL_ID)
+        
+        saveVar.save_default_channel(CHANNEL_ID)
 
 
 
 
+@client.event
+async def on_message(message):
+    await responses.channel_set(message, default_channel_id)
 
+# Load the default channel ID when the bot starts
+default_channel_id = saveVar.load_default_channel()
 
 
 
