@@ -1,0 +1,16 @@
+Bot Name: LoL Bot
+https://discord.com/api/oauth2/authorize?client_id=1114031465202724895&permissions=1634504014928&scope=bot
+
+Token
+MTExNDAzMTQ2NTIwMjcyNDg5NQ.GJ_8nc.wRuejjtz7b3DQGyZOeDfLbR-Qr-b-RNMHwBluY
+
+
+
+
+
+
+Bot Name: Valorant Notes Bot
+https://discord.com/api/oauth2/authorize?client_id=1114302936076517478&permissions=1634504014928&scope=bot
+
+Token
+MTExNDMwMjkzNjA3NjUxNzQ3OA.GVorSj.sPT9ocQu30D_57rQwJaX_FsCiV33rV5Jx6W7QM
