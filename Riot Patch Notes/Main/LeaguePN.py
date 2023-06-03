@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 MAX_PATCH = 2
 
 # Discord bot token
-TOKEN = 'MTExNDAzMTQ2NTIwMjcyNDg5NQ.GJ_8nc.wRuejjtz7b3DQGyZOeDfLbR-Qr-b-RNMHwBluY'
+TOKEN = os.getenv('RIOT_PN_TOKEN')
 
 # Channel ID where the notifications will be sent
 CHANNEL_ID = 805998967589830730
