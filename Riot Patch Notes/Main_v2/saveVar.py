@@ -25,3 +25,20 @@ def load_default_channel():
                 return int(channel_id)
 
     return None
+
+
+# Function to read the last patch number from the file
+def read_last_patch(LAST_PATCH_FILE):
+    if os.path.exists(LAST_PATCH_FILE):
+        with open(LAST_PATCH_FILE, 'r') as file:
+            try:
+                current_patch = int(file.read())
+                return current_patch
+            except ValueError:
+                pass
+    return 1
+
+# Function to write the current patch number to the file
+def write_last_patch(LAST_PATCH_FILE,patch_number):
+    with open(LAST_PATCH_FILE, 'w') as file:
+        file.write(str(patch_number))

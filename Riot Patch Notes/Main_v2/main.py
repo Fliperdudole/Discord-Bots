@@ -33,6 +33,8 @@ TOKEN = os.getenv('RIOT_PN_TOKEN')
 # Channel ID set to none but will have a default and can be set
 CHANNEL_ID = None
 
+# Max number of future Patches to check
+MAX_Patch = 2
 
 
 
@@ -53,24 +55,24 @@ async def on_ready():
 
 
     
-    if CHANNEL_ID is None:                                  # Checks if default channel isn't set
-        CHANNEL_ID = client.guilds[0].text_channels[0].id
-        print("Default Channel Set:", CHANNEL_ID)
+    if CHANNEL_ID is None:                                   # Checks if default channel isn't set
+        CHANNEL_ID = client.guilds[0].text_channels[0].id    # Sets Channel to channel that it joined to
+        print("Default Channel ID Set:", CHANNEL_ID)
         
-        saveVar.save_default_channel(CHANNEL_ID)
+        saveVar.save_default_channel(CHANNEL_ID)             # Saves Channel ID in default_channel.txt
     else:
-        print("Channel is set to", CHANNEL_ID)
+        print("Channel ID is set to",CHANNEL_ID)             # Shows Channel ID
 
 
 
 
 @client.command()
-async def setchannel(ctx):
-    print("Message recieved:", ctx.message.content)
-    await responses.channel_set(ctx, default_channel_id)
+async def setchannel(ctx):                                   # This command sets the Channel ID where the user calls the command
+    print("Command", ctx.message.content,"has been recieved")
+    await responses.channel_set(ctx, default_channel_id)     # Sends through reference to responses.py
 
 # Load the default channel ID when the bot starts
-default_channel_id = saveVar.load_default_channel()
+default_channel_id = saveVar.load_default_channel()          
 
 
 
