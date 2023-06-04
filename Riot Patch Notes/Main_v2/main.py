@@ -95,7 +95,7 @@ async def check_Valorant_Patch():
     pad_num = await ValorantPN.pad_patch_num(ValorantPN.current_patch)
 
     url = ValorantPN.URL.format(ValorantPN.current_season,pad_num)
-    print(url)
+    #print(url)
     response = requests.get(url)
 
     # Check if the page exists (returns 200 status code)
@@ -178,7 +178,25 @@ async def setchannel(ctx):                                   # This command sets
     await responses.channel_set(ctx, default_channel_id)     # Sends through reference to responses.py
 
 # Load the default channel ID when the bot starts
-default_channel_id = saveVar.load_default_channel()          
+default_channel_id = saveVar.load_default_channel()     
+
+
+@client.command()
+async def valorant(ctx):
+    if ctx.message.content.lower() == "!valorant":
+        giveRole = ValorantPN.role_name
+        role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
+        if role:
+            try:
+                await ctx.message.author.add_roles(role)
+                await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
+            except discord.Forbidden:
+                await ctx.message.channel.send("I don't have permission to assign roles.")
+                return
+        else:
+            await ctx.message.channel.send(f'Role "{giveRole}" not found.')
+
+    await client.process_commands(ctx.message)   
 
 
 
