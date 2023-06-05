@@ -38,109 +38,6 @@ MAX_PATCH = 2
 
 
 
-async def check_League_Patch():
-
-    url = LeaguePN.URL.format(LeaguePN.current_season,LeaguePN.current_patch)
-    
-    response = requests.get(url)
-
-    # Check if the page exists (returns 200 status code)
-    if response.status_code == 200:
-
-        leagueMessage= f"Patch Notes {LeaguePN.current_season}.{LeaguePN.current_patch} is out!\n{url}"
-
-        channel = client.get_channel(CHANNEL_ID)
-        
-        try:
-            role = discord.utils.get(channel.guild.roles, name=LeaguePN.role_name)
-            if role:
-                message = f"{role.mention}\n{leagueMessage} "
-                
-            await channel.send(message)
-        except discord.Forbidden:
-            print("The bot doesn't have permission to send messages in the channel.")
-            return
-        
-        LeaguePN.current_patch += 1
-        saveVar.write_last_patch(LeaguePN.LAST_PATCH_FILE,LeaguePN.current_patch)
-
-    else:
-
-        print(f"No update found for patch {LeaguePN.current_season}.{LeaguePN.current_patch}.")
-        
-        LeaguePN.current_patch +=1
-        saveVar.write_last_patch(LeaguePN.LAST_PATCH_FILE,LeaguePN.current_patch)
-        
-        LeaguePN.patch_tries +=1
-
-        # Check if the current patch exceeds a limit
-        if LeaguePN.patch_tries > MAX_PATCH:
-            print("Reached the maximum patch limit.")
-            
-            LeaguePN.current_patch -= 3
-            saveVar.write_last_patch(LeaguePN.LAST_PATCH_FILE,LeaguePN.current_patch)
-            print(f"Reseting patch back to last successful patch {LeaguePN.current_season}.{LeaguePN.current_patch}")
-            
-            LeaguePN.checking_patch=False
-            return 
-
-    
-
-
-
-
-
-async def check_Valorant_Patch():
-    
-    pad_num = await ValorantPN.pad_patch_num(ValorantPN.current_patch)
-
-    url = ValorantPN.URL.format(ValorantPN.current_season,pad_num)
-    #print(url)
-    response = requests.get(url)
-
-    # Check if the page exists (returns 200 status code)
-    if response.status_code == 200:
-
-        leagueMessage= f"Patch Notes {ValorantPN.current_season}.{pad_num} is out!\n{url}"
-
-        channel = client.get_channel(CHANNEL_ID)
-        
-        try:
-            role = discord.utils.get(channel.guild.roles, name=ValorantPN.role_name)
-            if role:
-                message = f"{role.mention}\n{leagueMessage} "
-                
-            await channel.send(message)
-        except discord.Forbidden:
-            print("The bot doesn't have permission to send messages in the channel.")
-            return
-        
-        ValorantPN.current_patch += 1
-        saveVar.write_last_patch(ValorantPN.LAST_PATCH_FILE,ValorantPN.current_patch)
-
-    else:
-
-        print(f"No update found for patch {ValorantPN.current_season}.{ValorantPN.current_patch}.")
-        
-        ValorantPN.current_patch +=1
-        saveVar.write_last_patch(ValorantPN.LAST_PATCH_FILE,ValorantPN.current_patch)
-        
-        ValorantPN.patch_tries +=1
-
-        # Check if the current patch exceeds a limit
-        if ValorantPN.patch_tries > MAX_PATCH:
-            print("Reached the maximum patch limit.")
-            
-            ValorantPN.current_patch -= 3
-            saveVar.write_last_patch(ValorantPN.LAST_PATCH_FILE,ValorantPN.current_patch)
-            print(f"Reseting patch back to last successful patch {ValorantPN.current_season}.{ValorantPN.current_patch}")
-            
-            ValorantPN.checking_patch=False
-            return 
-
-
-
-
 
 
 
@@ -165,10 +62,10 @@ async def on_ready():
 
     while LeaguePN.checking_patch:
         
-        await check_League_Patch()
+        await LeaguePN.check_League_Patch(CHANNEL_ID, MAX_PATCH, client)
 
     while ValorantPN.checking_patch:
-        await check_Valorant_Patch()
+        await ValorantPN.check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client)
 
 
 
