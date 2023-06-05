@@ -15,7 +15,7 @@ import asyncio
 from datetime import datetime, timedelta
 
 # These are the helper files
-import responses     # Will be used to create variables based off responses of user's
+import commandsPN      # This file contains all commands of the program 
 import LeaguePN      # This file will have the variables needed for League Patch notes
 import ValorantPN    # This file will have the variables needed for Valorant Patch notes
 import saveVar       # This file will save the variables in case the bot goes down
@@ -23,7 +23,7 @@ import saveVar       # This file will save the variables in case the bot goes do
 # Initialize the Discord client
 #intents = discord.Intents.default()
 
-client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+client = commands.Bot(command_prefix='!', intents=discord.Intents.all(),)
 
 
 
@@ -152,6 +152,7 @@ async def on_ready():
     CHANNEL_ID = saveVar.load_default_channel()
 
 
+    await client.load_extension('commandsPN')
     
     if CHANNEL_ID is None:                                   # Checks if default channel isn't set
         CHANNEL_ID = client.guilds[0].text_channels[0].id    # Sets Channel to channel that it joined to
@@ -172,31 +173,6 @@ async def on_ready():
 
 
 
-@client.command()
-async def setchannel(ctx):                                   # This command sets the Channel ID where the user calls the command
-    print("Command", ctx.message.content,"has been recieved")
-    await responses.channel_set(ctx, default_channel_id)     # Sends through reference to responses.py
-
-# Load the default channel ID when the bot starts
-default_channel_id = saveVar.load_default_channel()     
-
-
-@client.command()
-async def valorant(ctx):
-    if ctx.message.content.lower() == "!valorant":
-        giveRole = ValorantPN.role_name
-        role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
-        if role:
-            try:
-                await ctx.message.author.add_roles(role)
-                await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
-            except discord.Forbidden:
-                await ctx.message.channel.send("I don't have permission to assign roles.")
-                return
-        else:
-            await ctx.message.channel.send(f'Role "{giveRole}" not found.')
-
-    await client.process_commands(ctx.message)   
 
 
 

@@ -5,6 +5,12 @@
 
 
 import saveVar
+import discord
+from discord.ext import commands
+
+
+
+client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 # URL for the Valorant Patch Notes website
 URL = 'https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-{}-{}/'
