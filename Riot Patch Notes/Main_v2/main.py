@@ -36,6 +36,28 @@ CHANNEL_ID = None
 MAX_PATCH = 2
 
 
+async def schedule_timers():
+    while True:
+        # Get the current weekday (Monday is 0 and Sunday is 6)
+        current_day = datetime.today().weekday()
+
+        if current_day == 1:
+            # Tuesday at 1 PM
+            target_time = datetime.now().replace(hour=13, minute=0, second=0)
+            wait_time = (target_time - datetime.now()).total_seconds()
+
+            await asyncio.sleep(wait_time)
+            await ValorantPN.check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client)
+
+        elif current_day == 3:
+            # Thursday at 1 PM
+            target_time = datetime.now().replace(hour=8, minute=0, second=0)
+            wait_time = (target_time - datetime.now()).total_seconds()
+
+            await asyncio.sleep(wait_time)
+            await LeaguePN.check_League_Patch(CHANNEL_ID, MAX_PATCH, client)
+
+        await asyncio.sleep(60)  # Wait for 1 minute before checking again
 
 
 
@@ -58,14 +80,7 @@ async def on_ready():
     else:
         print("Channel ID is set to",CHANNEL_ID)             # Shows Channel ID
 
-
-    while LeaguePN.checking_patch:
-        
-        await LeaguePN.check_League_Patch(CHANNEL_ID, MAX_PATCH, client)
-
-    while ValorantPN.checking_patch:
-        await ValorantPN.check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client)
-
+    await schedule_timers()
 
 
 
