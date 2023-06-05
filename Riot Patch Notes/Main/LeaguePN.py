@@ -1,148 +1,99 @@
-import os
-import requests
+#Programmer: Brandon Sandoval
+#Date Started: 6/3/23
+#Purpose: This helper file will contain all the necessary variables/functions in order 
+#         for the main file to work for the specified game
+
+
+# Import libraries
+import saveVar
 import discord
-import asyncio
-from datetime import datetime, timedelta
+import requests
 
-# Max number of times Patch can be checked
-MAX_PATCH = 2
 
-# Discord bot token
-TOKEN = os.getenv('RIOT_PN_TOKEN')
-
-# Channel ID where the notifications will be sent
-CHANNEL_ID = 805998967589830730
-
-# URL of the website to check for updates
-URL_TEMPLATE = 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{}-{}-notes/'
-
+# URL for the League Patch Notes website
+URL = 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{}-{}-notes/'
+ 
 # File to store the last patch number
 LAST_PATCH_FILE = 'last_league_patch.txt'
 
-
-
-# Function to read the last patch number from the file
-def read_last_patch():
-    if os.path.exists(LAST_PATCH_FILE):
-        with open(LAST_PATCH_FILE, 'r') as file:
-            try:
-                current_patch = int(file.read())
-                return current_patch
-            except ValueError:
-                pass
-    return 1
-
-# Function to write the current patch number to the file
-def write_last_patch(patch_number):
-    with open(LAST_PATCH_FILE, 'w') as file:
-        file.write(str(patch_number))
-
-
-current_patch = read_last_patch()
-
-
-# Season number 
-current_season = 13
-
-
+# Number of tries done to check patch
 patch_tries = 0
 
+# Variable to check current patch to prevent recurring updates 
+current_patch = saveVar.read_last_patch(LAST_PATCH_FILE)
+
+# Current season/act
+current_season = 13
+
+# Get the role name to mention
+role_name = 'League-Patch-Notes'
+
+# amended League url
+league_url = URL.format(current_season, current_patch)
+
+# League response code
+league_response = requests.get(league_url)
 
 
 
-# Function to check for updates and send notifications
-async def check_for_updates():
-    global current_patch, patch_tries
+# Used as a bool flag
+checking_patch = True
+
+
+
+# This function, using the requests module, checks the website and sends in the notfication channel
+async def check_League_Patch(CHANNEL_ID, MAX_PATCH, client):
+    global current_patch, patch_tries, checking_patch
+
+    url = URL.format(current_season,current_patch)
     
-    # Generate the URL for the current patch
-    url = URL_TEMPLATE.format(current_season,current_patch)
-    
-    
-    # Fetch the webpage
+    # Request the website through HTML
     response = requests.get(url)
 
     # Check if the page exists (returns 200 status code)
     if response.status_code == 200:
-        # Get the role name to mention
-        role_name = 'League-Patch-Notes'  
-        
-        message = f"Patch Notes {current_season}.{current_patch} is out!\n{url}"
+
+        leagueMessage= f"Patch Notes {current_season}.{current_patch} is out!\n{url}"
+
         channel = client.get_channel(CHANNEL_ID)
         
-        if channel is None:
-            print("The channel was not found.")
-            return
-        
+        # if the role exists then send a message mentioning the role
         try:
             role = discord.utils.get(channel.guild.roles, name=role_name)
             if role:
-                message = f"{role.mention}\n{message} "
+                message = f"{role.mention}\n{leagueMessage} "
                 
             await channel.send(message)
-        except discord.Forbidden:
+            
+        except discord.Forbidden:# Bot doesnt have the right permissions in the server to send messages
             print("The bot doesn't have permission to send messages in the channel.")
             return
         
-        # Increment the current patch number
         current_patch += 1
-        write_last_patch(current_patch)
-    else:
-        
 
-        
+        # Save the last patch in a text file
+        saveVar.write_last_patch(LAST_PATCH_FILE,current_patch)
+
+    else:
+
+        # Prints in the terminal that no update was found
         print(f"No update found for patch {current_season}.{current_patch}.")
-        current_patch += 1
-        patch_tries += 1
         
-        # Check if the current patch exceeds a limit
+        current_patch +=1
+        saveVar.write_last_patch(LAST_PATCH_FILE,current_patch)
+        
+        patch_tries +=1
+
+        # Check if the current patch exceeds a limit as Riot likes to jump patches at times
         if patch_tries > MAX_PATCH:
             print("Reached the maximum patch limit.")
             
             current_patch -= 3
-            write_last_patch(current_patch)
+            saveVar.write_last_patch(LAST_PATCH_FILE,current_patch)
             print(f"Reseting patch back to last successful patch {current_season}.{current_patch}")
-            await waitThurs()
-            return
-
             
-        
-            
+            checking_patch=False
+            return 
 
-# Initialize the Discord client
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
-
-
-# Event triggered when the bot has connected to Discord
-@client.event
-async def on_ready():
-    print('Bot connected to Discord.')
     
-    while True:
-        await check_for_updates()
-        await asyncio.sleep(2)  # Wait for 2 seconds before checking again
 
-
-# Get the current day of the week and waits till 7am
-async def waitThurs():
-    print("Waiting for Thursday at 7am")
-    today = datetime.now().date()
-    weekday = today.weekday()  # Monday is 0 and Sunday is 6
-
-    # Calculate the days remaining until Thursday (weekday 3)
-    days_until_thursday = (3 - weekday) % 7  # Adjusted to Thursday
-
-    # Calculate the time until Thursday at 7 AM
-    next_thursday = today + timedelta(days=days_until_thursday)
-    next_thursday_7am = datetime.combine(next_thursday, datetime.min.time()) + timedelta(hours=7)  # Thursday at 7 AM
-    time_until_thursday_7am = next_thursday_7am - datetime.now()
-
-    # Schedule the check_for_updates() function to run on the next Thursday at 7 AM
-    await asyncio.sleep(time_until_thursday_7am.total_seconds())
-    await check_for_updates()
-
-
-
-
-# Run the bot
-client.run(TOKEN)
