@@ -89,7 +89,8 @@ async def schedule_timers():
 @client.event
 async def on_ready():
     global CHANNEL_ID
-    print("Patch Notes Bot is online!")
+    print("Patch Notes Bot is \033[92monline\033[0m") # puts the word "online" in green!
+
 
     # Saves the Channel ID in a file
     CHANNEL_ID = saveVar.load_default_channel()
@@ -100,12 +101,16 @@ async def on_ready():
     await create_notify_role()
     
     if CHANNEL_ID is None:                                   # Checks if default channel isn't set
-        CHANNEL_ID = client.guilds[0].text_channels[0].id    # Sets Channel to channel that it joined to
-        print("Default Channel ID Set:", CHANNEL_ID,"\n")
+        guild = client.guilds[0]
+        channel = guild.text_channels[0]
+        CHANNEL_ID = channel.id                              # Sets Channel to channel that it joined to
+        print(f"Default Channel ID Set to: {channel.name} (ID: {CHANNEL_ID})\n")
         
         saveVar.save_default_channel(CHANNEL_ID)             # Saves Channel ID in default_channel.txt
     else:
-        print("Channel ID is set to",CHANNEL_ID,"\n")             # Shows Channel ID
+        guild = client.guilds[0]  
+        channel = guild.get_channel(CHANNEL_ID)
+        print(f"Notification Channel set to: {channel.name} (ID: {CHANNEL_ID})\n")             # Shows Channel ID
 
     await schedule_timers()
 
