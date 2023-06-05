@@ -129,13 +129,14 @@ async def rmleague(ctx):
 async def helpPN(ctx):
     if ctx.message.content.lower() == "!helppn":
         await ctx.message.channel.send("These are the current commands I can receive!")
+        await ctx.message.channel.send("!setchannel - Set the notifications channel")
         await ctx.message.channel.send("!valorant - Add the Valorant-Patch-Notes role to receive notifications")
         await ctx.message.channel.send("!rmvalorant - Remove the Valorant-Patch-Notes role")
 
         await ctx.message.channel.send("!league - Add the League-Patch-Notes role to receive notifications")
         await ctx.message.channel.send("!rmleague - Remove the League-Patch-Notes role")
 
-        await ctx.message.channel.send("!setchannel - Set the notifications channel")
+        
 
 
 async def setup(bot):
