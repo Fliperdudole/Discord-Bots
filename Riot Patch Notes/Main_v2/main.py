@@ -8,14 +8,13 @@
 
 # import libraries
 import os
-import requests
 import discord
 from discord.ext import commands
 import asyncio
 from datetime import datetime, timedelta
 
 # These are the helper files
-import commandsPN      # This file contains all commands of the program 
+#import commandsPN   # This file contains all commands of the program 
 import LeaguePN      # This file will have the variables needed for League Patch notes
 import ValorantPN    # This file will have the variables needed for Valorant Patch notes
 import saveVar       # This file will save the variables in case the bot goes down
