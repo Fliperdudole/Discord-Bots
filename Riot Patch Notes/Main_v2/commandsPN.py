@@ -1,14 +1,15 @@
+# Import libraries
 import discord
 from discord.ext import commands
 
-
+# Helper libraries
 import ValorantPN
 import LeaguePN
 import saveVar
 
 
 
-
+# This function sets the channel ID to whereever it was called from
 async def channel_set(ctx, default_channel_id):
     if ctx.message.content.lower() == "!setchannel":# This response allows the user to set the channel they want the notifications in
         
@@ -26,7 +27,7 @@ async def channel_set(ctx, default_channel_id):
 
 
 
-
+# This command calls function 'channel_set()"
 @commands.command()
 async def setchannel(ctx):                                   # This command sets the Channel ID where the user calls the command
     print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author)
@@ -36,99 +37,106 @@ async def setchannel(ctx):                                   # This command sets
 default_channel_id = saveVar.load_default_channel()     
 
 
+
+# This command gives the user the notification role for the respective game
 @commands.command()
 async def valorant(ctx):
     if ctx.message.content.lower() == "!valorant":
         print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         giveRole = ValorantPN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
-        if role:
+        if role: # if the user calls the command then give them the role
             try:
                 await ctx.message.author.add_roles(role)
                 await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
                 return
-            
+            # if the bot doesn't have permission then print
             except discord.Forbidden:
                 await ctx.message.channel.send("I don't have permission to assign roles.")
                 return
             
-        else:
+        else: #  if the user doesn't have the role then let them know 
             await ctx.message.channel.send(f'Role "{giveRole}" not found.')
             return
-
+    # Processes the command through Discord's API
     await commands.process_commands(ctx.message)   
 
+
+# This command removes the notification role for the respective game from the user
 @commands.command()
 async def rmvalorant(ctx):
     if ctx.message.content.lower() == "!rmvalorant":
         print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         removeRole = ValorantPN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=removeRole)
-        if role:
+        if role: # if the user has the role then remove
             try:
                 await ctx.message.author.remove_roles(role)
                 await ctx.message.channel.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
                 return
-            
+            # if the bot doesn't have permission then print
             except discord.Forbidden:
                 await ctx.message.channel.send("I don't have permission to remove roles.")
                 return
             
-        else:
+        else:   #  if the user doesn't have the role then let them know 
             await ctx.message.channel.send(f'Role "{removeRole}" not found.')
             return
-
+    # Processes the command through Discord's API
     await commands.process_commands(ctx.message)   
 
 
 
-
+# This command gives the user the notification role for the respective game
 @commands.command()
 async def league(ctx):
     if ctx.message.content.lower() == "!league":
         print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         giveRole = LeaguePN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
-        if role:
+        if role: # if the user calls the command then give them the role
             try:
                 await ctx.message.author.add_roles(role)
                 await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
                 return
-            
+            # if the bot doesn't have permission then print
             except discord.Forbidden:
                 await ctx.message.channel.send("I don't have permission to assign roles.")
                 return
             
-        else:
+        else: #  if the user doesn't have the role then let them know 
             await ctx.message.channel.send(f'Role "{giveRole}" not found.')
             return
-
+    # Processes the command through Discord's API
     await commands.process_commands(ctx.message)   
 
 
+# This command removes the notification role for the respective game from the user
 @commands.command()
 async def rmleague(ctx):
     if ctx.message.content.lower() == "!rmleague":
         print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         removeRole = LeaguePN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=removeRole)
-        if role:
+        if role: # if the user has the role then remove
             try:
                 await ctx.message.author.remove_roles(role)
                 await ctx.message.channel.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
                 return
-            
+            # if the bot doesn't have permission then print
             except discord.Forbidden:
                 await ctx.message.channel.send("I don't have permission to remove roles.")
                 return
             
-        else:
+        else:   #  if the user doesn't have the role then let them know 
             await ctx.message.channel.send(f'Role "{removeRole}" not found.')
             return
-
+    # Processes the command through Discord's API
     await commands.process_commands(ctx.message)   
 
 
+
+# This is a help command as I was too lazy to mess with Discord's default help command
 @commands.command()
 async def helpPN(ctx):
     if ctx.message.content.lower() == "!helppn":
@@ -143,7 +151,7 @@ async def helpPN(ctx):
 
         
 
-
+# This is a setup function to add the commands to the bot which is then loaded from the main file
 async def setup(bot):
     bot.add_command(valorant)
     bot.add_command(rmvalorant)

@@ -1,11 +1,13 @@
+# Import library
 import os
 
+# Channel text file
 DEFAULT_CHANNEL_FILE = 'default_channel.txt'
 
 
 
 
-
+# This function saves and writes the default channel to the file
 def save_default_channel(CHANNEL_ID):
     # Open the file in write mode and save the default channel ID
     with open(DEFAULT_CHANNEL_FILE, 'w') as file:
@@ -14,7 +16,7 @@ def save_default_channel(CHANNEL_ID):
 
 
 
-
+# This function loads and reads the default channel from the file
 def load_default_channel():
     # Check if the file exists
     if os.path.isfile(DEFAULT_CHANNEL_FILE):

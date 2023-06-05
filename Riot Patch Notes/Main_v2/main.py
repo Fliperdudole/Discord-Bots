@@ -6,12 +6,12 @@
 
 
 
-# import libraries
+# Import libraries
 import os
 import discord
 from discord.ext import commands
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # These are the helper files
 #import commandsPN   # This file contains all commands of the program 
@@ -35,7 +35,30 @@ CHANNEL_ID = None
 # Max number of future Patches to check
 MAX_PATCH = 2
 
+async def create_notify_role():
+    guild = client.guilds[0]  # Change this to the desired guild or fetch it by ID
+    role_names = [ValorantPN.role_name,LeaguePN.role_name] # Array for role names
+   
+    
+    for role in role_names:
 
+        # Check if the role already exists
+        create_role = discord.utils.get(guild.roles, name=role)
+        
+        if create_role is None: # Role doesn't exist, create it
+            # hoist = shown on the server, mentionable = mentionable in server
+            role = await guild.create_role(name=role, hoist=True, mentionable=True)
+            print(f"Created role: {role.name}")
+        else:
+            print(f"Role already exists: {role}")
+
+
+
+
+
+
+
+# Function to check if the day is the day that Patch Notes usually come out for their respective game
 async def schedule_timers():
     while True:
         # Get the current weekday (Monday is 0 and Sunday is 6)
@@ -44,20 +67,21 @@ async def schedule_timers():
         if current_day == 1:
             # Tuesday at 1 PM
             target_time = datetime.now().replace(hour=13, minute=0, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()
+            wait_time = (target_time - datetime.now()).total_seconds()           #How much longer till patch comes out
 
             await asyncio.sleep(wait_time)
             await ValorantPN.check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client)
 
         elif current_day == 3:
             # Thursday at 1 PM
-            target_time = datetime.now().replace(hour=8, minute=0, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()
+            target_time = datetime.now().replace(hour=1, minute=0, second=0)
+            wait_time = (target_time - datetime.now()).total_seconds()           #How much longer till patch comes out
 
             await asyncio.sleep(wait_time)
             await LeaguePN.check_League_Patch(CHANNEL_ID, MAX_PATCH, client)
 
         await asyncio.sleep(60)  # Wait for 1 minute before checking again
+        print("PNBot waited a minute")
 
 
 
@@ -67,10 +91,13 @@ async def on_ready():
     global CHANNEL_ID
     print("Patch Notes Bot is online!")
 
+    # Saves the Channel ID in a file
     CHANNEL_ID = saveVar.load_default_channel()
 
-
+    # Loads commands from file "commandsPN.py"
     await client.load_extension('commandsPN')
+
+    await create_notify_role()
     
     if CHANNEL_ID is None:                                   # Checks if default channel isn't set
         CHANNEL_ID = client.guilds[0].text_channels[0].id    # Sets Channel to channel that it joined to
