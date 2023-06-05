@@ -14,7 +14,7 @@ async def channel_set(ctx, default_channel_id):
         
         default_channel_id = ctx.message.channel.id
         await ctx.send('Notifcations will now be sent here.') 
-        print("Notification Channel Updated to: ",ctx.message.channel)
+        print("Notification Channel Updated to: ",ctx.message.channel,"\n")
 
 
         # save updated default channel
@@ -29,7 +29,7 @@ async def channel_set(ctx, default_channel_id):
 
 @commands.command()
 async def setchannel(ctx):                                   # This command sets the Channel ID where the user calls the command
-    print("Command", ctx.message.content,"has been recieved")
+    print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author)
     await channel_set(ctx, default_channel_id)     
 
 # Load the default channel ID when the commands starts
@@ -39,6 +39,7 @@ default_channel_id = saveVar.load_default_channel()
 @commands.command()
 async def valorant(ctx):
     if ctx.message.content.lower() == "!valorant":
+        print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         giveRole = ValorantPN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
         if role:
@@ -60,6 +61,7 @@ async def valorant(ctx):
 @commands.command()
 async def rmvalorant(ctx):
     if ctx.message.content.lower() == "!rmvalorant":
+        print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         removeRole = ValorantPN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=removeRole)
         if role:
@@ -84,6 +86,7 @@ async def rmvalorant(ctx):
 @commands.command()
 async def league(ctx):
     if ctx.message.content.lower() == "!league":
+        print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         giveRole = LeaguePN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=giveRole)
         if role:
@@ -106,6 +109,7 @@ async def league(ctx):
 @commands.command()
 async def rmleague(ctx):
     if ctx.message.content.lower() == "!rmleague":
+        print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         removeRole = LeaguePN.role_name
         role = discord.utils.get(ctx.message.guild.roles, name=removeRole)
         if role:
@@ -128,6 +132,7 @@ async def rmleague(ctx):
 @commands.command()
 async def helpPN(ctx):
     if ctx.message.content.lower() == "!helppn":
+        print("Command", ctx.message.content,"has been recieved and sent by",ctx.message.author,"\n")
         await ctx.message.channel.send("These are the current commands I can receive!")
         await ctx.message.channel.send("!setchannel - Set the notifications channel")
         await ctx.message.channel.send("!valorant - Add the Valorant-Patch-Notes role to receive notifications")

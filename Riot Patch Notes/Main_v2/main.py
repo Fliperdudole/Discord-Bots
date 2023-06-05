@@ -74,11 +74,11 @@ async def on_ready():
     
     if CHANNEL_ID is None:                                   # Checks if default channel isn't set
         CHANNEL_ID = client.guilds[0].text_channels[0].id    # Sets Channel to channel that it joined to
-        print("Default Channel ID Set:", CHANNEL_ID)
+        print("Default Channel ID Set:", CHANNEL_ID,"\n")
         
         saveVar.save_default_channel(CHANNEL_ID)             # Saves Channel ID in default_channel.txt
     else:
-        print("Channel ID is set to",CHANNEL_ID)             # Shows Channel ID
+        print("Channel ID is set to",CHANNEL_ID,"\n")             # Shows Channel ID
 
     await schedule_timers()
 
