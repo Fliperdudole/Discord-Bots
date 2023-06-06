@@ -60,29 +60,43 @@ async def create_notify_role():
 
 # Function to check if the day is the day that Patch Notes usually come out for their respective game
 async def schedule_timers():
+    tuesday_checks = 0
+    thursday_checks = 0
+
     while True:
         # Get the current weekday (Monday is 0 and Sunday is 6)
         current_day = datetime.today().weekday()
 
-        if current_day == 1:
+        if current_day == 1 and tuesday_checks <= MAX_PATCH:
             # Tuesday at 1 PM
             target_time = datetime.now().replace(hour=13, minute=0, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()           #How much longer till patch comes out
+            wait_time = (target_time - datetime.now()).total_seconds()
 
-            await asyncio.sleep(wait_time)
+            if wait_time > 0:
+                await asyncio.sleep(wait_time)
+
             await ValorantPN.check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client)
+            tuesday_checks += 1
 
-        elif current_day == 3:
+        elif current_day == 3 and thursday_checks <= MAX_PATCH:
             # Thursday at 1 PM
-            target_time = datetime.now().replace(hour=1, minute=0, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()           #How much longer till patch comes out
+            target_time = datetime.now().replace(hour=13, minute=0, second=0)
+            wait_time = (target_time - datetime.now()).total_seconds()
 
-            await asyncio.sleep(wait_time)
+            if wait_time > 0:
+                await asyncio.sleep(wait_time)
+
             await LeaguePN.check_League_Patch(CHANNEL_ID, MAX_PATCH, client)
+            thursday_checks += 1
 
-        await asyncio.sleep(60)  # Wait for 1 minute before checking again
-        print("PNBot waited a minute")
+        # Reset counters on Monday
+        if current_day == 0:
+            tuesday_checks = 0
+            thursday_checks = 0
 
+        await asyncio.sleep(600)  # Wait 10 minutes before checking again
+        current_time = datetime.now().strftime("%H:%M:%S")  # Format current time as HH:MM:SS
+        print("Bot was \033[92monline\033[0m as of:", current_time)
 
 
 

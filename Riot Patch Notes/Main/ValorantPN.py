@@ -102,4 +102,3 @@ async def check_Valorant_Patch(CHANNEL_ID, MAX_PATCH, client):
             
             checking_patch=False
             return 
-

@@ -48,7 +48,8 @@ async def valorant(ctx):
         if role: # if the user calls the command then give them the role
             try:
                 await ctx.message.author.add_roles(role)
-                await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
+                # Currently set to DM's but if you want the message in general do "ctx.message.channel.send"
+                await ctx.message.author.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
                 return
             # if the bot doesn't have permission then print
             except discord.Forbidden:
@@ -72,7 +73,8 @@ async def rmvalorant(ctx):
         if role: # if the user has the role then remove
             try:
                 await ctx.message.author.remove_roles(role)
-                await ctx.message.channel.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
+                # Currently set to DM's but if you want the message in general do "ctx.message.channel.send"
+                await ctx.message.author.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
                 return
             # if the bot doesn't have permission then print
             except discord.Forbidden:
@@ -97,7 +99,8 @@ async def league(ctx):
         if role: # if the user calls the command then give them the role
             try:
                 await ctx.message.author.add_roles(role)
-                await ctx.message.channel.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
+                # Currently set to DM's but if you want the message in general do "ctx.message.channel.send"
+                await ctx.message.author.send(f'Role "{giveRole}" has been assigned to {ctx.message.author.mention}.')
                 return
             # if the bot doesn't have permission then print
             except discord.Forbidden:
@@ -121,7 +124,8 @@ async def rmleague(ctx):
         if role: # if the user has the role then remove
             try:
                 await ctx.message.author.remove_roles(role)
-                await ctx.message.channel.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
+                # Currently set to DM's but if you want the message in general do "ctx.message.channel.send"
+                await ctx.message.author.send(f'Role "{removeRole}" has been removed from {ctx.message.author.mention}.')
                 return
             # if the bot doesn't have permission then print
             except discord.Forbidden:
