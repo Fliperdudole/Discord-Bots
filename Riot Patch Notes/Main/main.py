@@ -77,10 +77,12 @@ async def schedule_timers(notif_channel):
 
             if wait_time > 0:
                 await asyncio.sleep(wait_time)
-            print(f"\ntuesday checks: {tuesday_checks}")
+            
             await ValorantPN.check_Valorant_Patch(notif_channel, tuesday_done, client)
+            print(f"\nValorant check is done")
             tuesday_done=False
             await LeaguePN.check_League_Patch(notif_channel, MAX_PATCH, client)
+            print(f"\nLeague of Legends check is done")
             tuesday_checks += 1
 
         elif current_day == 1 and thursday_checks < MAX_PATCH:

@@ -39,12 +39,12 @@ async def check_League_Patch(notif_channel, is_done, client):
 
 
     for patch_attempt in range(3):
-                print(f"\nattempt: {patch_attempt}")
+                #print(f"\nattempt: {patch_attempt}")
 
                 temp_patch = current_patch + patch_attempt
-                print(f"temp:{temp_patch}")
+                #print(f"temp:{temp_patch}")
                 url = URL.format(current_season,temp_patch)
-                print(f"url: {url}")
+                #print(f"url: {url}")
                 response = requests.get(url)
 
                 if response.status_code == 200:
@@ -62,10 +62,10 @@ async def check_League_Patch(notif_channel, is_done, client):
                             await channel.send(message)
                         except discord.Forbidden:
                             print("The bot doesn't have permission to send messages in the channel.")
-                    print(f"before: {current_patch}")
+                    #print(f"before: {current_patch}")
                     current_patch = temp_patch + 1
                     saveVar.write_last_patch(LAST_PATCH_FILE,current_patch)
-                    print(f"after: {current_patch}")
+                    #print(f"after: {current_patch}")
                     is_done = True
                     return is_done 
                     
