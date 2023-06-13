@@ -118,13 +118,13 @@ async def on_ready():
         guild = client.guilds[0]
         channel = guild.text_channels[0]
         CHANNEL_ID = channel.id                              # Sets Channel to channel that it joined to
-        print(f"Default Channel ID Set to: {channel.name} (ID: {CHANNEL_ID})\n")
+        print(f"Default Channel ID Set to: {channel.name} (Server: {guild.name})\n")
         
         saveVar.save_default_channel(CHANNEL_ID)             # Saves Channel ID in default_channel.txt
     else:
         guild = client.guilds[0]  
         channel = guild.get_channel(CHANNEL_ID)
-        print(f"Notification Channel set to: {channel.name} (ID: {CHANNEL_ID})\n")             # Shows Channel ID
+        print(f"Notification Channel set to: {channel.name} (Server: {guild.name})\n")             # Shows Channel ID
 
     await schedule_timers()
 

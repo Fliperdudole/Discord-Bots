@@ -1,0 +1,20 @@
+- Discord members can set their tracker with command
+
+
+- updates daily at 11:59pm
+- shows a weekly message that updates
+
+- based off Highest rank
+
+- Shows last 20 games
+
+  League of Legends Leaderboard
+  - KDA
+  - Winrate
+  - Average Total Damage Dealt
+
+
+  Valorant Leaderboard
+  - KDA
+  - Combat Score
+  - Winrate
