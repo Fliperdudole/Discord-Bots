@@ -29,12 +29,14 @@ async def channel_set(ctx, default_channel_id):
 
 # This command calls function 'channel_set()"
 @commands.command()
-async def setchannel(ctx):                                   # This command sets the Channel ID where the user calls the command
-    print(f"Command {ctx.message.content} has been recieved and sent by {ctx.message.author} (Server: {ctx.guild.name}) \n")
-    await channel_set(ctx, default_channel_id)     
+async def setchannel(ctx):
+        server_id = str(ctx.guild.id)
+        channel_id = str(ctx.message.channel.id)
+        saveVar.update_default_channel(server_id, channel_id, default_channels)
+        await ctx.send("Default notification channel updated.")     
 
 # Load the default channel ID when the commands starts
-default_channel_id = saveVar.load_default_channel()     
+default_channels = saveVar.load_default_channels()     
 
 
 # This command gives the user the notification role for the respective game
