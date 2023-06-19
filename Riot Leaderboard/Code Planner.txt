@@ -1,5 +1,7 @@
 - Discord members can set their tracker with command
 
+- Total games
+
 
 - updates daily at 11:59pm
 - shows a weekly message that updates
@@ -18,3 +20,18 @@
   - KDA
   - Combat Score
   - Winrate
+
+==================
+  Pseudocode
+==================
+
+Discord bot will join server and await for someone to add their ign to the Leaderboard.
+once it has been added the leaderboard has begun. It will show the players stats in a long format
+Example:
+      Position        Name         Rank          Winrate         KDA         Total Damage
+      ==================================================================================
+      1st         Fliperdudole     Gold IV         50%          2.40             355k
+      etc
+      etc
+
+The bot will accumulate the total damage they have dealt every day up until Monday. Where it will announce the winners in each role by @'ing them
