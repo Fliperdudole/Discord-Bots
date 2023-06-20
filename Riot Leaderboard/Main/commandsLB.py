@@ -16,42 +16,22 @@ async def track(ctx, *,account_name):
     combined_url = base_url + url_account
     api_url = combined_url + '?api_key=' + os.getenv('RIOT_LB_API')
 
-    await ctx.send(f'{api_url} is the url')
+    #await ctx.send(f'{api_url} is the url')
 
-    await ctx.send(f'{account_name} is being tracked')
+    #await ctx.send(f'{account_name} is being tracked')
 
     try:
         response = requests.get(api_url)
         response.raise_for_status()  # Raises an exception if the response contains an error status code
         # Process the response if no error occurred
     except requests.exceptions.HTTPError as err:
-        error_code = err.response.status_code
-        if error_code == 400:
-            print("Bad request error (400)")
-        elif error_code == 401:
-            print("Unauthorized error (401)")
-        elif error_code == 403:
-            print("Forbidden error (403)")
-        elif error_code == 404:
-            print("Data not found error (404)")
-        elif error_code == 405:
-            print("Method not allowed error (405)")
-        elif error_code == 415:
-            print("Unsupported media type error (415)")
-        elif error_code == 429:
-            print("Rate limit exceeded error (429)")
-        elif error_code == 500:
-            print("Internal server error (500)")
-        elif error_code == 502:
-            print("Bad gateway error (502)")
-        elif error_code == 503:
-            print("Service unavailable error (503)")
-        elif error_code == 504:
-            print("Gateway timeout error (504)")
-        else:
-            print("An HTTP error occurred with status code:", error_code)
+        error_data = err.response.json().get("status")
+        error_message = error_data.get("message")
+        error_code = error_data.get("status_code")
+        await ctx.send(f'Error code {error_code}: {error_message}. Contact Fliperdudole for further questions')
     except requests.exceptions.RequestException as err:
-        print("An error occurred during the request:", err)
+        await ctx.send("An error occurred during the request.")
+
 
 
 
