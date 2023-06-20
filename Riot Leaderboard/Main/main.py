@@ -12,8 +12,33 @@ from discord.ext import commands
 import asyncio
 from datetime import datetime
 
+
+
+import requests
+
+
+
+
+
 client = commands.Bot(command_prefix='!', intents=discord.Intents.all(),)
 
 
 # Discord bot token, using OS environment variables
 TOKEN = os.getenv('RIOT_LB_TOKEN') 
+RIOT_API = os.getenv('RIOT_LB_API') 
+
+
+
+
+@client.event 
+async def on_ready():
+
+    await client.load_extension('commandsLB')
+
+
+
+
+
+
+
+client.run(TOKEN)
