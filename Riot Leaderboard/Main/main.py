@@ -25,7 +25,8 @@ client = commands.Bot(command_prefix='!', intents=discord.Intents.all(),)
 
 # Discord bot token, using OS environment variables
 TOKEN = os.getenv('RIOT_LB_TOKEN') 
-RIOT_API = os.getenv('RIOT_LB_API') 
+RIOT_API = "RGAPI-b8a2896e-8bd0-4d4f-bdb3-f625a8b9b67a"
+
 
 
 
