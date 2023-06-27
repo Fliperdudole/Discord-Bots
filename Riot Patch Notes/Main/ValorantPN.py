@@ -23,7 +23,7 @@ LAST_PATCH_FILE = './DATA/last_valorant_patch.txt'
 current_patch = saveVar.read_last_patch(LAST_PATCH_FILE)
 
 # Current season/act
-current_season = 6
+current_season = 7
 
 # Get the role name to mention
 role_name = 'Valorant-Patch-Notes' 
