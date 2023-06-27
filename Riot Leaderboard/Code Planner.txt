@@ -22,7 +22,7 @@
   - Winrate
 
 ==================
-  Pseudocode
+  Leaderboard structure
 ==================
 
 Discord bot will join server and await for someone to add their ign to the Leaderboard.
@@ -55,9 +55,9 @@ post the final leaderboard on discord. It will then start of with the same users
 
 
 
-============
+======================
 What I currently have
-============
+======================
 Discord bot joins -> standby -> Command Track -> gets name -> gets account puuid/name ->gets wr,kda,ttl dmg -> gets rank/lp -> prints
 
 
