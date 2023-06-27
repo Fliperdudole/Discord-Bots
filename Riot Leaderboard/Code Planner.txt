@@ -35,3 +35,115 @@ Example:
       etc
 
 The bot will accumulate the total damage they have dealt every day up until Monday. Where it will announce the winners in each role by @'ing them
+
+
+
+===============
+  START UP
+===============
+
+When the bot joins a server, it will be on standby until a user uses the command !startleaderboard and it will then save the current day, as the initial day,
+and will begin recording the rank, winrate, kda, and total damage dealt, of any user added of any games, with it updating every hour, of that day up until 
+11:59pm of that day. once it is 11:59pm it will save all data in a JSON file, which the name of the JSON file will follow this format 
+"LoL_LB_month_day_year.json", for each user added and their data. The program will continue recording data of each day and with a new JSON file, but with 
+the same user's of the previous JSON file for the respective day and post the daily leaderboard. once it has been a week since the inital day. It will add up 
+all the data of the previous days and complete the leaderboard, save a JSON file with the name of the file being "Final_LoL_LB_initial day - final day" and 
+post the final leaderboard on discord. It will then start of with the same users and continue.
+
+
+
+
+
+
+============
+What I currently have
+============
+Discord bot joins -> standby -> Command Track -> gets name -> gets account puuid/name ->gets wr,kda,ttl dmg -> gets rank/lp -> prints
+
+
+===========================
+What I need
+===========================
+Plan:
+Discord bot joins -> standby until !start -> !start saves the initial day, server ID, in a file and tells user about !setleaderboard and continues until !stop
+if !start is used but no user in userfile, then notify server that a user needs to be added with !add <name> command before starting.
+
+Check if current day has "LoL_LB_month_day_year.JSON" file, if not create it with user's account name/puuid skeleton file
+Once it has started, read users match history every hour, if (match date = current date and match id is not in file "LoL_LB_month_day_year.JSON")
+then save match id, wr, kda,ttl dmg, rank/lp to "LoL_LB_month_day_year.JSON" under under user's name, then calculate user's current average stats and saves back to "LoL_LB_month_day_year.JSON" 
+if (current tracking date = 11:59pm) then for each server ID in "LoL_LB_month_day_year.JSON" print the leaderboard, which reads the "LoL_LB_month_day_year.JSON" file and organizes user's stats 
+by rank in array. Then print array, in that day's "LoL_LB_month_day_year.JSON" file save Leaderboard
+
+if current day = a week after initial day then create  "Final_LoL_LB_initial day - final day.JSON" file, then read all of the previous averages of that week,
+calculate new averages then save to "Final_LoL_LB_initial day - final day", then for each Server ID, print out leaderboard by descending rank and @ each winner for each category
+
+once week has been done, start all over with the same existing users.
+
+====================
+Commands to use
+====================
+!start               = saves the initial day, server ID, in a file
+!stop                = stop leaderboard tracking for server ID
+!setleaderboard      = sets the channel in where the server wants the leaderboard to be
+!currentleaderboard  = prints the current averages, but they are not the daily
+!add <name>          = gets account puuid/name -> saves name/server ID to userfile for that server's leaderboard
+
+===============
+JSON STRUCTURE
+===============
+{
+  "serverID_1": {
+    "channelID": "channelID_1",
+    "users": {
+      "accountName1": {
+        "matchIDs": {
+          "matchID_1": {
+            "date": "2023-06-20",
+            "win": true,
+            "kda": 5.2,
+            "totalDamage": 12500,
+            "rank": "Gold III"
+          },
+          "matchID_2": {
+            "date": "2023-06-21",
+            "win": false,
+            "kda": 2.8,
+            "totalDamage": 9800,
+            "rank": "Silver II"
+          }
+        },
+        "currentAverages": {
+          "winrate": 0.6,
+          "kda": 3.5,
+          "totalDamage": 11200
+        }
+      },
+      "accountName2": {
+        "matchIDs": {
+          "matchID_3": {
+            "date": "2023-06-22",
+            "win": true,
+            "kda": 4.1,
+            "totalDamage": 14500,
+            "rank": "Platinum IV"
+          }
+        },
+        "currentAverages": {
+          "winrate": 0.7,
+          "kda": 4.1,
+          "totalDamage": 14500
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+Loop until end of day:
+    read user file -> if name is in data tracking file then check if 
+      
