@@ -140,10 +140,3 @@ JSON STRUCTURE
 
 
 
-
-
-
-
-Loop until end of day:
-    read user file -> if name is in data tracking file then check if 
-      
