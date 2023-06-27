@@ -2,7 +2,7 @@
 import os
 
 # Channel text file
-DEFAULT_CHANNEL_FILE = 'default_channel.txt'
+DEFAULT_CHANNEL_FILE = './DATA/default_channel.txt'
 
 
 

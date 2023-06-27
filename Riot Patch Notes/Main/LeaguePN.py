@@ -14,7 +14,7 @@ import requests
 URL = 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{}-{}-notes/'
  
 # File to store the last patch number
-LAST_PATCH_FILE = 'last_league_patch.txt'
+LAST_PATCH_FILE = './DATA/last_league_patch.txt'
 
 # Variable to check current patch to prevent recurring updates 
 current_patch = saveVar.read_last_patch(LAST_PATCH_FILE)

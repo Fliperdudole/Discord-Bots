@@ -16,7 +16,7 @@ import requests
 URL = 'https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-{}-{}/'
 
 # File to store the last patch number
-LAST_PATCH_FILE = 'last_valorant_patch.txt'
+LAST_PATCH_FILE = './DATA/last_valorant_patch.txt'
 
 
 # Variable to check current patch to prevent recurring updates
