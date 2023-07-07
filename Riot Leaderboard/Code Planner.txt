@@ -92,51 +92,108 @@ Commands to use
 JSON STRUCTURE
 ===============
 {
-  "serverID_1": {
-    "channelID": "channelID_1",
-    "users": {
-      "accountName1": {
-        "matchIDs": {
-          "matchID_1": {
-            "date": "2023-06-20",
-            "win": true,
-            "kda": 5.2,
-            "totalDamage": 12500,
-            "rank": "Gold III"
-          },
-          "matchID_2": {
-            "date": "2023-06-21",
-            "win": false,
-            "kda": 2.8,
-            "totalDamage": 9800,
-            "rank": "Silver II"
-          }
+    "server_list": {
+      "ServerName_XYZ123": {
+        "Metadata": {
+          "serverID": 1,
+          "channelID": "channelID_1",
+          "participants": [
+            "participant1",
+            "participant2",
+            "participant3"
+          ]
         },
-        "currentAverages": {
-          "winrate": 0.6,
-          "kda": 3.5,
-          "totalDamage": 11200
+        "Info": {
+          "accountName1": {
+            "numMatches": 2,
+            "matchIDs": {
+              "matchID_1": {
+                "date": "2023-06-20",
+                "win": true,
+                "kda": 5.2,
+                "totalDamage": 12500,
+                "rank": "Gold III"
+              },
+              "matchID_2": {
+                "date": "2023-06-21",
+                "win": false,
+                "kda": 2.8,
+                "totalDamage": 9800,
+                "rank": "Silver II"
+              }
+            },
+            "currentAverages": {
+              "winrate": 0.6,
+              "kda": 3.5,
+              "totalDamage": 11200
+            }
+          },
+          "accountName2": {
+            "numMatches": 1,
+            "matchIDs": {
+              "matchID_3": {
+                "date": "2023-06-22",
+                "win": true,
+                "kda": 4.1,
+                "totalDamage": 14500,
+                "rank": "Platinum IV"
+              }
+            },
+            "currentAverages": {
+              "winrate": 0.7,
+              "kda": 4.1,
+              "totalDamage": 14500
+            }
+          }
         }
       },
-      "accountName2": {
-        "matchIDs": {
-          "matchID_3": {
-            "date": "2023-06-22",
-            "win": true,
-            "kda": 4.1,
-            "totalDamage": 14500,
-            "rank": "Platinum IV"
-          }
+      "ServerName_ABC456": {
+        "Metadata": {
+          "serverID": 2,
+          "channelID": "channelID_2",
+          "participants": [
+            "participant4",
+            "participant5",
+            "participant6"
+          ]
         },
-        "currentAverages": {
-          "winrate": 0.7,
-          "kda": 4.1,
-          "totalDamage": 14500
+        "Info": {
+          "accountName3": {
+            "numMatches": 3,
+            "matchIDs": {
+              "matchID_4": {
+                "date": "2023-06-20",
+                "win": true,
+                "kda": 6.2,
+                "totalDamage": 15000,
+                "rank": "Diamond II"
+              },
+              "matchID_5": {
+                "date": "2023-06-21",
+                "win": true,
+                "kda": 7.3,
+                "totalDamage": 17000,
+                "rank": "Diamond I"
+              },
+              "matchID_6": {
+                "date": "2023-06-23",
+                "win": false,
+                "kda": 3.4,
+                "totalDamage": 12000,
+                "rank": "Platinum III"
+              }
+            },
+            "currentAverages": {
+              "winrate": 0.8,
+              "kda": 5.6,
+              "totalDamage": 14666.67
+            }
+          }
         }
       }
     }
   }
-}
+  
 
 test JSON file with 1 user
 

@@ -1,31 +1,47 @@
 # Import libraries
 import os
+import json
+import asyncio
+from datetime import datetime, date
 import discord
+
 from discord.ext import commands
 from tabulate import tabulate
 
 import requests
 
-RIOT_API = "RGAPI-b8a2896e-8bd0-4d4f-bdb3-f625a8b9b67a"
+RIOT_API = "RGAPI-ea6c7fa3-802a-4889-9ec7-a68293a56faf"
 
 
 @commands.command()
 async def track(ctx, *,account_name):
     account_name = account_name.strip()
     url_account_name= account_name.replace(" ", "%20")
-    
 
+
+    
+    
+    # CTRL + / for multiple comment
     try:
         account_puuid, summoner_id = await getPlayer_PUUID(ctx, url_account_name)
         winrate,kda,total_damage = await getPlayer_Match_Data(ctx, account_puuid)
-        user_rank, user_lp = await getSummoner_Data(ctx, summoner_id)
-        await printSummoner_Data(ctx, account_name, user_rank, user_lp, winrate ,kda, total_damage)
+    #     user_rank, user_lp = await getSummoner_Data(ctx, summoner_id)
+    #     await printSummoner_Data(ctx, account_name, user_rank, user_lp, winrate ,kda, total_damage)
+
+    #     summoner_stats = {
+    #         "account_name" : account_name ,
+    #         "user_rank"    : user_rank ,
+    #         "user_lp"      : user_lp ,
+    #         "winrate"      : winrate ,
+    #         "kda"          : kda,
+    #         "total_damage" : total_damage
+
+    #     }
+
+    #     await updatejsonfile(ctx,summoner_stats)
 
     
-    
-    
-    
-    
+
     
     
     except requests.exceptions.HTTPError as err:
@@ -35,7 +51,32 @@ async def track(ctx, *,account_name):
         await ctx.send(f'Error code {error_code}: {error_message}. Contact Fliperdudole for further questions')
     except requests.exceptions.RequestException as err:
         await ctx.send("An error occurred during the request.")
+    except ZeroDivisionError as err:
+        await ctx.send(f"{account_name} has not played any games today.")
     
+
+
+
+async def createjsonfile(ctx):
+    print("In createjsonfile function")
+
+
+
+
+
+async def updatejsonfile(ctx,summoner_stats):
+    print("In updatejsonfile function")
+
+
+
+
+
+async def json_filename(ctx):
+    print("In json_filename function")
+    current_date = datetime.now().strftime("%m_%d_%Y")  # Get the current date in the format "month_day_year"
+    return f"LoL_LB_{current_date}.JSON"
+
+
 
 
 async def getPlayer_PUUID(ctx, url_account_name ):   
@@ -69,9 +110,17 @@ async def getPlayer_PUUID(ctx, url_account_name ):
         
 
 async def getPlayer_Match_Data(ctx, puuid):
-    #print(puuid)
+    # Get the current date
+    current_date = datetime.today()
+    
+
+    # Convert the current date to epoch timestamp
+    epoch_timestamp = int(datetime.combine(current_date, datetime.min.time()).timestamp())
+
+
+
     match_type = "type=ranked"
-    base_url = f"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?{match_type}&start=0&count=20"
+    base_url = f"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?startTime={epoch_timestamp}&{match_type}&start=0&count=20"
     api_key_v1 = '&api_key=' +  RIOT_API
 
     api_url = base_url + api_key_v1
@@ -86,11 +135,11 @@ async def getPlayer_Match_Data(ctx, puuid):
     kda_count = 0
     win_count = []
     total_damage_count = 0
-    past_games = 20
+    past_games = len(match_ids)
     
     for x in range(past_games):
         recent_match_ID = match_ids[x]
-        #await ctx.send(f'Recent Match ID: {recent_match_ID}')
+        await ctx.send(f'Recent Match ID: {recent_match_ID}')
         
         api_key_v2 = '?api_key=' +  RIOT_API
 
