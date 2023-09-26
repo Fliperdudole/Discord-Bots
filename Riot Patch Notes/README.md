@@ -22,3 +22,6 @@ For Windows:
 - -pip install requests discord asyncio
 - Add the Discord Token to your system's environment variables
 - Restart your Code Editor, Open the Program and Run!
+![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/a664c484-dd29-41e2-b2dc-ad5ca88df66b)
+
+![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/70a10199-46e3-41a4-b92d-238832114aae)
