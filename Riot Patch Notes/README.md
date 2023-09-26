@@ -23,3 +23,5 @@ For Windows:
 - Add the Discord Token to your system's environment variables
 - Restart your Code Editor, Open the Program and Run!
 ![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/f509df27-d10e-49e9-8fb4-a90a3fdc56af)
+![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/4f36b659-ad30-443b-b2fa-f918a211d390)
+
