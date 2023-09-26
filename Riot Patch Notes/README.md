@@ -24,4 +24,4 @@ For Windows:
 - Restart your Code Editor, Open the Program and Run!
 ![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/a664c484-dd29-41e2-b2dc-ad5ca88df66b)
 
-![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/660a8943-05e9-4b43-b2e7-9f1a3c34623e)
+![image](https://github.com/Fliperdudole/Discord-Bots/assets/89997736/70a10199-46e3-41a4-b92d-238832114aae)
