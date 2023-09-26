@@ -6,25 +6,20 @@
 
 
 
-# Import libraries
+# Import necessary libraries
 import os
 import discord
 from discord.ext import commands
 import asyncio
 from datetime import datetime
 
-# These are the helper files
-#import commandsPN   # This file contains all commands of the program 
-import LeaguePN      # This file will have the variables needed for League Patch notes
-import ValorantPN    # This file will have the variables needed for Valorant Patch notes
-import saveVar       # This file will save the variables in case the bot goes down
+# Import custom helper files
+import LeaguePN      # Contains variables needed for League Patch notes
+import ValorantPN    # Contains variables needed for Valorant Patch notes
+import saveVar       # Saves variables in case the bot goes down
 
 # Initialize the Discord client
-#intents = discord.Intents.default()
-
-client = commands.Bot(command_prefix='!', intents=discord.Intents.all(),)
-
-
+client = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 # Discord bot token, using OS environment variables
 TOKEN = os.getenv('RIOT_PN_TOKEN') 
@@ -39,8 +34,7 @@ start_time = datetime.now()  # Set the program start time
 
 prev_prompt = ''
 
-
-
+# Function to check and print roles in a guild
 async def check_and_print_roles(guild, role_names):
     role_status = {}
 
@@ -50,7 +44,7 @@ async def check_and_print_roles(guild, role_names):
 
     return role_status
 
-# Usage example in your code:
+# Function to create the roles for servers
 async def create_notify_role():
     print("\n\033[33mRole Check:\033[0m")
     for guild in client.guilds:
@@ -70,8 +64,7 @@ async def create_notify_role():
                     new_role = await guild.create_role(name=role_name, hoist=True, mentionable=True)
                     print(f"✅ Created role {new_role.name} in server '{guild.name}'")
 
-
-
+# Function to check the server status (online or offline)
 async def check_server_status():
     current_day = datetime.today().weekday()
     current_time = datetime.now().strftime("%I:%M:%S %p")  # Use %I:%M:%S %p for 12-hour format
@@ -85,12 +78,7 @@ async def check_server_status():
     new_line = f"\033[33mServer Status:\033[0m{server_status} ({current_time}) - Runtime: {runtime.total_seconds():.2f} seconds"
     return new_line
 
-
-
-
-
-
-# Function to check if the day is the day that Patch Notes usually come out for their respective game
+# Function to schedule and check for game patch notes
 async def schedule_timers(notif_channel):
     tuesday_checks = 0
     tuesday_done = False
