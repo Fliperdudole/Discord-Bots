@@ -79,7 +79,3 @@ async def check_League_Patch(notif_channel, is_done, client):
         print("Reached the maximum patch limit.")
         print(f"Reseting patch back to last successful patch {current_season}.{temp_patch}")
         return
-
-
-
-
