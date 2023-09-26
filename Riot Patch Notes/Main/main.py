@@ -74,7 +74,7 @@ async def create_notify_role():
 
 async def check_server_status():
     current_day = datetime.today().weekday()
-    current_time = datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.now().strftime("%I:%M:%S %p")  # Use %I:%M:%S %p for 12-hour format
     runtime = datetime.now() - start_time
 
     if current_day in (1, 3):  # Tuesday or Thursday
