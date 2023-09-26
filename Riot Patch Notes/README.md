@@ -1,6 +1,5 @@
 # Riot Patch Notes Bot 
-This is a Discord Bot that will ping Riot's website on Tuesday and Thursday to see if Valorant or League of Legends patch notes are out and notifies Discord server!
-
+Riot Patch Notes is your ultimate Discord companion for staying up-to-date with your favorite Riot Games, Valorant, and League of Legends! Receive timely notifications about the latest patch notes, effortlessly manage notification roles, and even set your preferred notification channel. With support for multiple servers, automated role creation, and a user-friendly interface, Riot Patch Notes ensures you never miss a beat in the world of Riot Games.
 
 # Features!
 - Multiple servers can now use the bot without conflicts!
