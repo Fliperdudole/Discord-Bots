@@ -9,14 +9,18 @@
 import saveVar
 import discord
 import requests
-
+import os
 
 
 # URL for the Valorant Patch Notes website
 URL = 'https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-{}-{}/'
 
+
+# Get the current script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # File to store the last patch number
-LAST_PATCH_FILE = './DATA/last_valorant_patch.txt'
+LAST_PATCH_FILE = os.path.join(script_dir, '..', 'DATA', 'last_valorant_patch.txt')
 
 
 # Variable to check current patch to prevent recurring updates

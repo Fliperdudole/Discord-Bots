@@ -35,24 +35,57 @@ CHANNEL_ID = None
 # Max number of future Patches to check
 MAX_PATCH = 1
 
-
+start_time = datetime.now()  # Set the program start time
 
 prev_prompt = ''
 
+
+
+async def check_and_print_roles(guild, role_names):
+    role_status = {}
+
+    for role_name in role_names:
+        existing_role = discord.utils.get(guild.roles, name=role_name)
+        role_status[role_name] = existing_role is not None
+
+    return role_status
+
+# Usage example in your code:
 async def create_notify_role():
+    print("\n\033[33mRole Check:\033[0m")
     for guild in client.guilds:
         role_names = [ValorantPN.role_name, LeaguePN.role_name]  # Array for role names
 
-        for role in role_names:
-            # Check if the role already exists
-            existing_role = discord.utils.get(guild.roles, name=role)
+        # Check if both roles exist in the server
+        role_status = await check_and_print_roles(guild, role_names)
 
-            if existing_role is None:  # Role doesn't exist, create it
-                # hoist = shown on the server, mentionable = mentionable in server
-                new_role = await guild.create_role(name=role, hoist=True, mentionable=True)
-                print(f"Created role '{new_role.name}' in server '{guild.name}'")
-            else:
-                print(f"Role '{existing_role.name}' already exists in server '{guild.name}'")
+        if role_status[ValorantPN.role_name] and role_status[LeaguePN.role_name]:
+            print(f"✅ Both roles ({ValorantPN.role_name} and {LeaguePN.role_name}) already exist in server '{guild.name}'")
+        else:
+            for role_name, exists in role_status.items():
+                if exists:
+                    print(f"✅ Role {role_name} already exists in server '{guild.name}'")
+                else:
+                    # Role doesn't exist, create it
+                    new_role = await guild.create_role(name=role_name, hoist=True, mentionable=True)
+                    print(f"✅ Created role {new_role.name} in server '{guild.name}'")
+
+
+
+async def check_server_status():
+    current_day = datetime.today().weekday()
+    current_time = datetime.now().strftime("%H:%M:%S")
+    runtime = datetime.now() - start_time
+
+    if current_day in (1, 3):  # Tuesday or Thursday
+        server_status = "\033[92m online\033[0m"
+    else:
+        server_status = "\033[91m offline\033[0m"
+
+    new_line = f"\033[33mServer Status:\033[0m{server_status} ({current_time}) - Runtime: {runtime.total_seconds():.2f} seconds"
+    return new_line
+
+
 
 
 
@@ -67,64 +100,60 @@ async def schedule_timers(notif_channel):
     global prev_prompt
 
     while True:
-        # Get the current weekday (Monday is 0 and Sunday is 6)
         current_day = datetime.today().weekday()
+        current_time = datetime.now().strftime("%H:%M:%S")
 
-        if current_day == 1 and tuesday_checks < MAX_PATCH:
+        if current_day in (1, 3):  # Tuesday or Thursday
             # Tuesday at 1 PM
-            target_time = datetime.now().replace(hour=12, minute=0, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()
+            if current_day == 1 and tuesday_checks < MAX_PATCH:
+                
+                target_time = datetime.now().replace(hour=11, minute=18, second=0)
+                wait_time = (target_time - datetime.now()).total_seconds()
 
-            if wait_time > 0:
-                await asyncio.sleep(wait_time)
-            
-            await ValorantPN.check_Valorant_Patch(notif_channel, tuesday_done, client)
-            print(f"\nValorant check is done")
-            tuesday_done=False
-            await LeaguePN.check_League_Patch(notif_channel, MAX_PATCH, client)
-            print(f"\nLeague of Legends check is done")
-            tuesday_checks += 1
+                if wait_time <= 0:
+                    print("\n\033[33mGame Check:\033[0m")
+                    await ValorantPN.check_Valorant_Patch(notif_channel, tuesday_done, client)
+                    print(f"\033[31mValorant\033[0m Tuesday check is done\n")
+                    tuesday_done = False
+                    await LeaguePN.check_League_Patch(notif_channel, MAX_PATCH, client)
+                    print(f"\033[34mLeague Of Legends\033[0m Tuesday check is done\n")
+                    tuesday_checks += 1
 
-        elif current_day == 1 and thursday_checks < MAX_PATCH:
             # Thursday at 1 PM
-            target_time = datetime.now().replace(hour=17, minute=44, second=0)
-            wait_time = (target_time - datetime.now()).total_seconds()
+            elif current_day == 3 and thursday_checks < MAX_PATCH:
+                target_time = datetime.now().replace(hour=13, minute=0, second=0)
+                wait_time = (target_time - datetime.now()).total_seconds()
 
-            if wait_time > 0:
-                await asyncio.sleep(wait_time)
+                if wait_time <= 0:
+                    print("\n\033[33mGame Check:\033[0m")
+                    await ValorantPN.check_Valorant_Patch(notif_channel, thursday_done, client)
+                    print(f"\033[31mValorant\033[0m Thursday check is done\n")
+                    thursday_done = False
+                    await LeaguePN.check_League_Patch(notif_channel, thursday_done, client)
+                    print(f"\033[34mLeague Of Legends\033[0m Thursday check is done\n")
+                    thursday_checks += 1
 
-            await ValorantPN.check_Valorant_Patch(notif_channel, thursday_done, client)
-            thursday_done = False
-            await LeaguePN.check_League_Patch(notif_channel, thursday_done, client)
-            thursday_checks += 1
+        status = await check_server_status()
+        print(status, end="\r")
+        prev_prompt = status
 
-        # Reset counters on Monday
-        if current_day == 0:
-            tuesday_checks = 0
-            tuesday_done = False
-
-            thursday_checks = 0
-            thursday_done = False
+        await asyncio.sleep(10)
 
 
-        await asyncio.sleep(10 )  # Wait 10 minutes before checking again
-        current_time = datetime.now().strftime("%H:%M:%S")  # Format current time as HH:MM:SS
-        print(prev_prompt, end="\r")
-        new_line = f"Bot was \033[92monline\033[0m as of: {current_time}"
-        print(new_line, end="\r")
-        prev_prompt = new_line
 
 
 
 @client.event
 async def on_ready():
     global CHANNEL_ID
-    print("Patch Notes Bot is \033[92monline\033[0m")  # puts the word "online" in green!
 
-    print("Bot is connected to the following servers:")
+    server_count = len(client.guilds)
+    total_members = sum(guild.member_count for guild in client.guilds)
+
+    print(f"\033[33mServer List ({server_count} Servers, {total_members} Members):\033[0m")
+
     for guild in client.guilds:
-        print(guild.name)
-    print()
+        print(f"{guild.name} ({guild.member_count} Members)")
 
     notif_channel = saveVar.load_default_channels()
 
@@ -147,6 +176,7 @@ async def on_ready():
                 print(f"No available text channels in the server: {guild.name}")
 
     await schedule_timers(notif_channel)
+
 
 
 

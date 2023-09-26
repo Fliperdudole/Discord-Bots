@@ -1,9 +1,10 @@
-# Import library
 import os
 
-# Channel text file
-DEFAULT_CHANNEL_FILE = './DATA/default_channel.txt'
+# Get the current script's directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Construct the file path to default_channel.txt
+DEFAULT_CHANNEL_FILE = os.path.join(script_dir, '..', 'DATA', 'default_channel.txt')
 
 
 
